@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container" id="app">
+        <div class="row">
+            <div class="col-md-12">
+               <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">自定义设置</button>
+            </div>
+            <div class="col-md-12">
+                <label>所选条件：</label>
+                <span v-for="item in fieldArr" v-if="item.searchValue">{{ item.fieldname + ":" +item.searchValue }}</span>
+            </div>
+            <div class="col-md-4"  v-for="item in fieldArr" v-if="item.isSearchView == 'true'">
+                <label>{{ item.fieldname }}</label>
+                <input type="text" class="form-control" :id="'search-' + item.field" v-model="item.searchValue" />
+            </div>
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th v-for="item in fieldArr" v-if="item.isTableView == 'true'">{{ item.fieldname }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="dataItem in tableData">
+                            <td v-for="fieldItem in fieldArr" v-if="fieldItem.isTableView == 'true'">{{ dataItem[fieldItem.field] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ul>
+                            <li v-for="fieldItem in fieldArr">
+                                <label>{{ fieldItem.fieldname }}</label>
+                                <label class="radio-inline">
+                                    <input type="radio" :name="'radio-table' + fieldItem.field"  v-model="fieldItem.isTableView" value="true"> 列表显示
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" :name="'radio-table' + fieldItem.field"  v-model="fieldItem.isTableView" value="false"> 列表不显示
+                                </label>
+
+                                 <label class="radio-inline">
+                                    <input type="radio" :name="'radio-search' + fieldItem.field"  v-model="fieldItem.isSearchView" value="true"> 搜索显示
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" :name="'radio-search' + fieldItem.field"  v-model="fieldItem.isSearchView" value="false"> 搜索不显示
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./node_modules/vue/dist/vue.min.js"></script>
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            fieldArr: [],
+            tableData: []
+        },
+        created: function() {
+            /**用Ajax去异步获取表格字段信息**/ 
+            this.fieldArr = [
+                {fieldname: "项目单位", field: "project_company", isTableView: "true", isSearchView: "true", searchValue: "s"},
+                {fieldname: "项目名称", field: "project_name", isTableView: "true", isSearchView: "true", searchValue: ""},
+                {fieldname: "所属区域", field: "area", isTableView: "true", isSearchView: "true", searchValue: ""},
+                {fieldname: "主管部门", field: "department", isTableView: "false", isSearchView: "true", searchValue: ""},
+                {fieldname: "专项资金名称", field: "fund_name", isTableView: "true", isSearchView: "true", searchValue: ""},
+            ],
+            /**用Ajax去异步获取表格数据信息**/ 
+            this.tableData = [
+                {id: 1, department: "长沙市农业委", project_name: "测试项目01", project_company: "申报单位01", area: "长沙县", fund_name: "测试专项资金01"},
+                {id: 2, department: "长沙市农业委", project_name: "测试项目02", project_company: "申报单位01", area: "长沙县", fund_name: "测试专项资金01"},
+                {id: 3, department: "长沙市农业委", project_name: "测试项目03", project_company: "申报单位01", area: "长沙县", fund_name: "测试专项资金01"},
+                {id: 4, department: "长沙市农业委", project_name: "测试项目04", project_company: "申报单位01", area: "长沙县", fund_name: "测试专项资金01"},
+                {id: 5, department: "长沙市农业委", project_name: "测试项目05", project_company: "申报单位01", area: "长沙县", fund_name: "测试专项资金01"},
+                {id: 6, department: "长沙市农业委", project_name: "测试项目06", project_company: "申报单位01", area: "长沙县", fund_name: "测试专项资金01"},
+                {id: 7, department: "长沙市农业委", project_name: "测试项目07", project_company: "申报单位01", area: "长沙县", fund_name: "测试专项资金01"}
+            ]
+        }
+    })
+</script>
+</html>
