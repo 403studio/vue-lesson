@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <title>Vue Lesson 01</title>
+</head>
+<body>
+    <div id="app" class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>用户名</th>
+                    <th>性别</th>
+                    <th>出生日期</th>
+                    <th>地址</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in data">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.sex }}</td>
+                    <td>{{ item.birthday }}</td>
+                    <td>{{ item.address }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            data: []
+        },
+        created: function() {
+            //使用ajax操作异步从后台获取数据
+            this.data = [
+                {name: "张三", username: "zhangsan", sex: "男", birthday: "1986-10-12", address: "湖南省长沙市长沙县"},
+                {name: "李四", username: "lisi", sex: "男", birthday: "1986-10-12", address: "湖南省长沙市长沙县"},
+                {name: "王五", username: "wangwu", sex: "男", birthday: "1986-10-12", address: "湖南省长沙市长沙县"},
+                {name: "赵六", username: "zhaoliu", sex: "男", birthday: "1986-10-12", address: "湖南省长沙市长沙县"},
+                {name: "张丽", username: "zhangli", sex: "女", birthday: "1986-11-12", address: "湖南省长沙市长沙县"}
+            ];
+        }
+    })
+</script>
+</html>
