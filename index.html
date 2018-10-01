@@ -5,38 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <link type="text/css" rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="static/css/main.css"/>
     <title>Vue Lesson 01</title>
 </head>
 <body>
     <div id="app" class="container">
+        <div class="block">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">自定义列</button>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>姓名</th>
-                    <th>用户名</th>
-                    <th>性别</th>
-                    <th>出生日期</th>
-                    <th>地址</th>
+                    <th v-for="item in listFields" v-if="item.isTableShow == 'true'">{{ item.name }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in data">
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.username }}</td>
-                    <td>{{ item.sex }}</td>
-                    <td>{{ item.birthday }}</td>
-                    <td>{{ item.address }}</td>
+                    <td v-for="field in listFields" v-if="field.isTableShow == 'true'">{{ item[field.field] }}</td>
                 </tr>
             </tbody>
         </table>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">自定义</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6" v-for="field in listFields">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ field.name }}</label>
+                                    <div class="col-sm-9">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="radio" v-bind:name="field.field + '-radio-table'" v-model="field.isTableShow" value="true"> 显示
+                                                <input type="radio" v-bind:name="field.field + '-radio-table'" v-model="field.isTableShow" value="false"> 隐藏
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="changeFieldsInfo">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    
 </body>
 <script>
     var vm = new Vue({
         el: "#app",
         data: {
-            data: []
+            data: [],
+            listFields: []
         },
         created: function() {
             //使用ajax操作异步从后台获取数据
@@ -47,6 +81,20 @@
                 {name: "赵六", username: "zhaoliu", sex: "男", birthday: "1986-10-12", address: "湖南省长沙市长沙县"},
                 {name: "张丽", username: "zhangli", sex: "女", birthday: "1986-11-12", address: "湖南省长沙市长沙县"}
             ];
+            //使用ajax操作异步从后台获取当前用户当前页面表格数据所显示的数据列信息
+            this.listFields = [
+                {field: "name", name: "姓名", isTableShow: "true"},
+                {field: "username", name: "用户名", isTableShow: "true"},
+                {field: "sex", name: "性别", isTableShow: "true"},
+                {field: "birthday", name: "出生日期", isTableShow: "true"},
+                {field: "address", name: "地址", isTableShow: "false"},
+            ]
+        },
+        methods: {
+            changeFieldsInfo: function() {
+                //使用ajax操作异步的将修改后的数据列信息保存到数据库中
+                console.log(this.listFields);
+            }
         }
     })
 </script>
