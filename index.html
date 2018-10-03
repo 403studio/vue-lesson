@@ -9,12 +9,19 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <link type="text/css" rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="static/css/main.css"/>
-    <title>Vue Lesson 01</title>
+    <title>Vue Lesson 03</title>
 </head>
 <body>
     <div id="app" class="container">
         <div class="block">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">自定义列</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#table-modal">自定义表格列</button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#search-modal">自定义搜索项</button>
+        </div>
+        <div class="block">
+            <div class="form-group col-md-4" v-for="field in listFields" v-if="field.isSearchShow == 'true'">
+                <label v-bind:for="field.field + '-search-item'">{{ field.name }}</label>
+                <input type="text" class="form-control" v-bind:id="field.field + '-search-item'">
+            </div>
         </div>
         <table class="table table-bordered">
             <thead>
@@ -28,17 +35,17 @@
                 </tr>
             </tbody>
         </table>
-
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <!-- 自定义表格选项弹出框 -->
+        <div class="modal fade" id="table-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content modal-lg">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">自定义</h4>
+                        <h4 class="modal-title" id="myModalLabel">自定义表格</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6" v-for="field in listFields">
+                            <div class="col-md-6" v-for="field in listFields" v-bind:key="field.field + 'table-control'">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ field.name }}</label>
                                     <div class="col-sm-9">
@@ -46,6 +53,39 @@
                                             <label>
                                                 <input type="radio" v-bind:name="field.field + '-radio-table'" v-model="field.isTableShow" value="true"> 显示
                                                 <input type="radio" v-bind:name="field.field + '-radio-table'" v-model="field.isTableShow" value="false"> 隐藏
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="changeFieldsInfo">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 自定义搜索选项弹出框 -->
+        <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">自定义搜索</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6" v-for="field in listFields" v-bind:key="field.field + 'search-control'">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ field.name }}</label>
+                                    <div class="col-sm-9">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="radio" v-bind:name="field.field + '-radio-search'" v-model="field.isSearchShow" value="true"> 显示
+                                                <input type="radio" v-bind:name="field.field + '-radio-search'" v-model="field.isSearchShow" value="false"> 隐藏
                                             </label>
                                         </div>
                                         
@@ -83,11 +123,11 @@
             ];
             //使用ajax操作异步从后台获取当前用户当前页面表格数据所显示的数据列信息
             this.listFields = [
-                {field: "name", name: "姓名", isTableShow: "true"},
-                {field: "username", name: "用户名", isTableShow: "true"},
-                {field: "sex", name: "性别", isTableShow: "true"},
-                {field: "birthday", name: "出生日期", isTableShow: "true"},
-                {field: "address", name: "地址", isTableShow: "false"},
+                {field: "name", name: "姓名", isTableShow: "true", isSearchShow: "true"},
+                {field: "username", name: "用户名", isTableShow: "true", isSearchShow: "true"},
+                {field: "sex", name: "性别", isTableShow: "true", isSearchShow: "true"},
+                {field: "birthday", name: "出生日期", isTableShow: "true", isSearchShow: "false"},
+                {field: "address", name: "地址", isTableShow: "false", isSearchShow: "true"},
             ]
         },
         methods: {
