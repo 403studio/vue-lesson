@@ -6,3 +6,8 @@
 * npm包管理工具的使用
 ## 安装使用
 `npm install`
+
+## 联系方式
+* 网站：[http://www.403studio.com/](http://www.403studio.com/)
+* 微信公众：微信搜索“懒得糊涂个人工作室”
+* GitHub：[https://github.com/403studio/](https://github.com/403studio/)
